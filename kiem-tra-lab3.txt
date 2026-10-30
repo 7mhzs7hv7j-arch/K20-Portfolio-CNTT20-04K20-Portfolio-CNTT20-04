@@ -1,0 +1,97 @@
+                  PHIẾU BÁO CÁO KIỂM TRA LAB 3 (V3)
+       Học phần: Thiết kế web và triển khai hệ thống phần mềm (FIT4014)
+
+1. THÔNG TIN SINH VIÊN
+- Họ và tên: Mai Lâm Duy
+- Mã sinh viên: 2071020214
+- Lớp: CNTT 20-04
+- Phiên bản sản phẩm: Portfolio V3 (HTML5 + CSS ngoài)
+- Trình duyệt kiểm thử: Google Chrome (DevTools)
+
+2. KẾT QUẢ KIỂM THỬ ĐỘ RỘNG VÀ CHỨC NĂNG (T01 - T06)
+[T01] CSS và Selector:
+- Kết quả: ĐẠT.
+- Mô tả: Mở DevTools (F12) -> Elements -> Styles, kiểm tra phần tử <article class="card">.
+  Xác định được các thuộc tính áp dụng đến từ file css/style.css thông qua selector .card.
+  Hiểu rõ cơ chế cascade: các thuộc tính khai báo sau ghi đè các giá trị mặc định của trình duyệt.
+  Box model hiển thị đúng theo border-box: padding (1.5rem) và border (1px) nằm gọn bên trong kích thước width đã tính.
+
+[T02] Màn hình lớn (1200px):
+- Kết quả: ĐẠT.
+- Mô tả: Khung nội dung .container được căn giữa đều hai bên (max-width: 68rem, margin-inline: auto).
+  Menu điều hướng dàn ngang thông thoáng trên header.
+  Vùng dự án (.project-grid) tự động chia thành 2 cột card song song rất cân đối.
+
+[T03] Màn hình vừa (768px - Tablet):
+- Kết quả: ĐẠT.
+- Mô tả: Toàn bộ nội dung co giãn linh hoạt, menu vẫn thẳng hàng hoặc xuống dòng nhẹ nếu phóng to chữ.
+  Các card dự án giữ nguyên khoảng cách gap đồng đều (1.5rem), không bị méo hình ảnh hay bể khung.
+
+[T04] Màn hình nhỏ (320px - Mobile hẹp):
+- Kết quả: ĐẠT.
+- Mô tả: Không xảy ra hiện tượng thanh cuộn ngang (horizontal scrollbar).
+  Menu tự động xuống dòng nhiều hàng ngay ngắn nhờ flex-wrap: wrap.
+  Khối dự án tự chuyển về dạng 1 cột đơn nhờ cơ chế minmax(min(100%, 18rem), 1fr).
+  Form liên hệ và ảnh đại diện co giãn vừa vặn với chiều ngang màn hình.
+
+[T05] Kiểm tra nội dung dài:
+- Kết quả: ĐẠT.
+- Mô tả: Khi thêm đoạn văn bản mô tả dự án dài gấp đôi và một đường link dài, thẻ .card tự giãn chiều cao theo nội dung, thuộc tính overflow-wrap: anywhere giúp ngắt dòng chữ an toàn, không bị tràn hay đè chữ lên footer.
+
+[T06] Kiểm tra điều hướng và tương tác:
+- Kết quả: ĐẠT.
+- Mô tả: Bấm thử cả 5 liên kết trên thanh menu đều cuộn mượt và nhảy chính xác đến các thẻ <section> có id tương ứng (#gioi-thieu, #ky-nang, #du-an, #lo-trinh, #lien-he).
+  Nhấn phím Tab di chuyển qua các liên kết, ô input và button có viền :focus-visible màu xanh đậm rõ ràng, đảm bảo tiêu chuẩn hỗ trợ bàn phím (Accessibility).
+  Các thẻ <label> liên kết đúng với <input> thông qua thuộc tính for và id.
+
+3. NHẬT KÝ LỖI VÀ BẢN SỬA (DEBUGGING LOG)
+- Độ rộng và hiện tượng lỗi: 
+  Tại kích thước màn hình 320px (T04), thanh menu điều hướng trên cùng bị tràn ngang ra khỏi màn hình, làm xuất hiện thanh cuộn ngang khó chịu cho toàn trang.
+  
+- Nguyên nhân: 
+  Trong file css/style.css, selector .menu sử dụng display: flex nhưng mặc định flex-wrap là nowrap, khiến các mục liên kết bị ép nằm trên cùng 1 hàng ngang vượt quá độ rộng 320px của viewport.
+
+- Bản sửa:
+  Thêm thuộc tính "flex-wrap: wrap;" vào bộ chọn .menu trong css/style.css:
+  
+  /* Trước khi sửa */
+  .menu {
+    display: flex;
+    gap: 0.5rem 1rem;
+    justify-content: center;
+  }
+
+  /* Sau khi sửa */
+  .menu {
+    display: flex;
+    flex-wrap: wrap; /* Cho phép các mục tự rớt dòng khi thiếu chỗ */
+    gap: 0.5rem 1rem;
+    justify-content: center;
+  }
+
+- Kiểm tra lại: 
+  Tải lại trang tại kích thước 320px, menu tự động chia thành 2-3 dòng ngay ngắn, căn giữa đẹp mắt, trang web hoàn toàn hết hiện tượng cuộn ngang.
+  (Minh chứng lưu tại: minh-chung/loi-truoc.png và minh-chung/loi-sau.png).
+
+4. TRẢ LỜI CÂU HỎI EXIT TICKET (THEO PHIẾU LAB 3)
+(1) Selector .card chọn gì?
+-> Chọn tất cả các phần tử HTML có class mang tên "card" (trong bài là các thẻ <article class="card"> đại diện cho từng dự án).
+
+(2) Box-sizing: border-box tính width ra sao?
+-> Thuộc tính width sẽ bao gồm toàn bộ: phần nội dung (content) + vùng đệm (padding) + đường viền (border). Điều này giúp kích thước phần tử không bị phình to ra ngoài ý muốn khi tăng padding hay border.
+
+(3) Design token (biến CSS trong :root) giúp cập nhật màu thế nào?
+-> Giúp quản lý màu tập trung tại một nơi duy nhất. Khi muốn thay đổi màu chủ đạo của toàn bộ trang web (từ nút bấm, tiêu đề đến màu liên kết), chỉ cần đổi giá trị biến --color-primary trong :root thay vì phải đi tìm và sửa từng dòng code.
+
+(4) Vì sao dùng Flexbox cho menu và Grid cho dự án?
+-> Flexbox phù hợp cho việc sắp xếp bố cục 1 chiều (theo hàng ngang của menu liên kết, dễ dàng co giãn và rớt dòng khi thiếu chỗ). 
+   Grid phù hợp cho bố cục 2 chiều (chia lưới nhiều hàng/cột của danh sách card dự án, giúp kiểm soát diện tích và kích thước các cột đồng đều nhau linh hoạt).
+
+(5) Ở độ rộng 320px cần kiểm tra những gì?
+-> Cần kiểm tra xem có bị lỗi thanh cuộn ngang không, menu có xuống dòng gọn gàng không, ảnh đại diện và form liên hệ có bị tràn ra ngoài lề không, các chữ dài có bị cắt ngang hoặc mất chữ hay không.
+
+5. ĐÁNH GIÁ VÀ HƯỚNG CẢI THIỆN Ở BUỔI 4
+- Tự đánh giá: Đã hoàn thiện toàn bộ yêu cầu Lab 3, giao diện sạch đẹp, bố cục thích ứng tốt mà không dùng JavaScript.
+- Kế hoạch cải thiện ở Buổi 4: 
+  + Ứng dụng Media Query với kỹ thuật Mobile-first để tối ưu menu thành nút bấm (Hamburger menu) cho thiết bị di động.
+  + Thêm hiệu ứng chuyển cảnh mượt mà (transitions) và cải thiện giao diện hiển thị cho phần Lộ trình học tập (timeline) dạng đồ họa trực quan hơn.
